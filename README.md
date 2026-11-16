@@ -12,7 +12,16 @@ produce different views of the same text and where their outputs need review.
 - **Analysis:** [sba927_analysis.py](sba927_analysis.py)
 - **Dataset:** [SBA927.txt](SBA927.txt)
 - **Recorded output:** [SBA927_results.txt](SBA927_results.txt)
-- **Coursework report:** [docs/coursework/report.docx](docs/coursework/report.docx)
+- **Analysis report:** [docs/coursework/report.docx](docs/coursework/report.docx)
+
+## Business relevance
+
+The workflow demonstrates techniques that can help analysts organize written
+feedback, identify named entities, and flag sentiment for review. Potential
+applications include support-ticket triage, customer-review analysis, and
+internal document exploration. This repository uses movie passages to show
+the methods; it has not been validated on real customer data or deployed as
+a business service.
 
 ## How it works
 
@@ -39,8 +48,8 @@ terminal in the repository folder.
 ### Windows PowerShell
 
 ```powershell
-git clone https://github.com/rwnycvet/SBA-927-Business-Text-Analytics.git
-cd SBA-927-Business-Text-Analytics
+git clone https://github.com/rwnycvet/business-text-analytics.git
+cd business-text-analytics
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe sba927_analysis.py
@@ -52,8 +61,8 @@ The commands call the virtual environment directly, so activation is optional.
 ### macOS or Linux
 
 ```bash
-git clone https://github.com/rwnycvet/SBA-927-Business-Text-Analytics.git
-cd SBA-927-Business-Text-Analytics
+git clone https://github.com/rwnycvet/business-text-analytics.git
+cd business-text-analytics
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 .venv/bin/python sba927_analysis.py
@@ -114,7 +123,7 @@ manual judgments and prompt-based analysis.
 ## Background and AI assistance
 
 This project began as Per Scholas SBA 927. The original coursework report is
-retained under `docs/coursework`, and the repository URL is retained for the
-submitted assignment. I used ChatGPT (OpenAI) for explanations, code examples,
+retained under `docs/coursework`. I used ChatGPT (OpenAI) for explanations,
+code examples,
 debugging guidance, report preparation, and repository documentation. I ran the
 script locally and reviewed its outputs during the assessment.
