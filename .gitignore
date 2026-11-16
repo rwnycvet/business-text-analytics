@@ -1,0 +1,20 @@
+# Python environments and caches
+.venv/
+venv/
+nltk_01/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local NLP downloads and credentials
+nltk_data/
+.env
+.env.*
+!.env.example
+
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+~$*.docx
