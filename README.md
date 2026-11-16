@@ -1,105 +1,120 @@
-# SBA 927 Business Text Analytics
+# Business Text Analytics with Python
 
-**Author:** Richard Watson Jr.  
-**Course:** Per Scholas — SBA 927 Business Text Analytics  
-**Repository:** https://github.com/rwnycvet/SBA-927-Business-Text-Analytics
+**A reproducible NLP workflow for exploring text, entities, and sentiment.**
 
-This project analyzes 12 supplied passages about *I, Robot* using Python,
-NLTK, and TextBlob. It demonstrates tokenization, preprocessing, stemming,
-lemmatization, part-of-speech (POS) tagging, named entity recognition (NER),
-and sentiment analysis. The report also documents prompt-based language-model
-experiments performed during the assessment.
+Built by Richard Watson Jr.
 
-## Project files
+This project uses NLTK and TextBlob to analyze 12 short passages about
+*I, Robot*. It shows how text cleaning, stemming, lemmatization,
+part-of-speech tagging, named entity recognition, and sentiment scoring
+produce different views of the same text and where their outputs need review.
 
-| File | Purpose |
-|---|---|
-| `sba927_analysis.py` | Submitted Python analysis script |
-| `SBA927.txt` | Required input dataset, with one passage per line |
-| `SBA927_results.txt` | Saved preprocessing, stemming, lemmatization, POS, and NER output for all 12 passages |
-| `SBA_927_Business_Text_Analytics_Report.docx` | Per Scholas formatted report, including the full results appendix |
-| `requirements.txt` | Python dependencies |
-| `.gitignore` | Excludes local environments, caches, and credentials |
+- **Analysis:** [sba927_analysis.py](sba927_analysis.py)
+- **Dataset:** [SBA927.txt](SBA927.txt)
+- **Recorded output:** [SBA927_results.txt](SBA927_results.txt)
+- **Coursework report:** [docs/coursework/report.docx](docs/coursework/report.docx)
 
-## Requirements
+## How it works
 
-- Python 3 with pip
-- Internet access on the first run to download the required NLTK resources
-- A terminal opened in the project folder, where both the Python script and `SBA927.txt` are located
+1. Loads one passage per line from `SBA927.txt`.
+2. Tokenizes and lowercases the text, removes punctuation and stop words,
+   and retains `no`, `not`, and `nor`. It expands the dataset's `doesn't`
+   to `does not` before filtering.
+3. Applies Porter stemming and WordNet lemmatization using its default
+   noun setting.
+4. Runs POS tagging and named entity recognition on the original text.
+5. Prints TextBlob polarity scores for passages 5, 8, and 12.
+6. Writes token, stem, lemma, POS, and entity results for all 12 passages
+   to `SBA927_results.txt`.
 
-No API key is needed to run the Python script. The prompt-based language-model
-experiments are documented in the report and are not executed by this script.
+The script runs locally without an API key. The language-model prompt
+experiments in the report were performed separately from the Python script.
 
-## Run on Windows with PowerShell
+## Run locally
 
-Download this repository using **Code → Download ZIP**, extract it, and open
-the extracted folder in VS Code. Open a terminal in that folder and run:
+You need Python 3 with pip and internet access for the initial package and
+NLTK resource downloads. Clone or download the repository, then open a
+terminal in the repository folder.
+
+### Windows PowerShell
 
 ```powershell
+git clone https://github.com/rwnycvet/SBA-927-Business-Text-Analytics.git
+cd SBA-927-Business-Text-Analytics
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe sba927_analysis.py
 ```
 
-These commands use the virtual environment directly; activating it is optional.
-If Python is available through `py` instead of `python`, use
-`py -m venv .venv` for the first command.
+If Python is available as `py`, use `py -m venv .venv` for environment creation.
+The commands call the virtual environment directly, so activation is optional.
 
-## Run on macOS or Linux
+### macOS or Linux
 
 ```bash
+git clone https://github.com/rwnycvet/SBA-927-Business-Text-Analytics.git
+cd SBA-927-Business-Text-Analytics
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 .venv/bin/python sba927_analysis.py
 ```
 
-## What the script does
+The script downloads its NLTK resources as needed. Run it from the repository
+root: input and output paths are relative to the current working directory.
+Each run replaces `SBA927_results.txt`; sentiment scores appear in the terminal.
 
-1. Reads the 12 lines of `SBA927.txt` from the current working directory.
-2. Tokenizes and cleans the text, lowercases tokens, and removes stop words.
-   It retains `no`, `not`, and `nor` and expands the dataset's `doesn't` to
-   `does not` to preserve negation.
-3. Applies Porter stemming and default noun-based WordNet lemmatization.
-4. Performs POS tagging and NER on the original text.
-5. Prints TextBlob sentiment polarity for passages 5, 8, and 12.
-6. Writes the full token, stem, lemma, POS, and NER output to
-   `SBA927_results.txt` in the current folder, replacing any existing copy.
+## Recorded findings
 
-NLTK downloads `punkt`, `punkt_tab`, `stopwords`, `wordnet`,
-`averaged_perceptron_tagger_eng`, `maxent_ne_chunker_tab`, and `words` as needed.
+| Example | Observed result | Why it matters |
+|---|---|---|
+| Negation | Sonny's passage keeps `not` in the cleaned tokens. | Removing negation can reverse meaning. |
+| Stemming | `investigates` becomes `investig`. | Stems group variants but may not be dictionary words. |
+| Lemmatization | `serves` becomes `serf`; `leaves` becomes `leaf`. | Treating every token as a noun can select the wrong lemma. |
+| Named entities | `Susan Calvin` is labeled `PERSON`; `Sonny` is labeled `GPE` in passage 11. | Entity labels need contextual checks. |
+| Sentiment | Passage 5 scores `+0.200` despite its sinister turn. | Positive numeric polarity can conflict with overall meaning. |
 
-## Observed results and interpretation
+The recorded sentiment scores are `+0.200`, `-0.033`, and `0.000` for
+passages 5, 8, and 12 respectively. The report explains the comparison with
+manual judgments and prompt-based analysis.
 
-- The script processes 12 passages and preserves `not` in Sonny's statement.
-- NER identifies Susan Calvin as `PERSON` but makes mistakes with the movie
-  title, V.I.K.I., and Sonny. For example, Sonny is labeled `GPE` in passage 11.
-- Default noun lemmatization can produce misleading forms, including
-  `serves` → `serf` and `leaves` → `leaf`.
-- The recorded TextBlob polarity scores are `0.200` for passage 5,
-  `-0.033` for passage 8, and `0.000` for passage 12.
-- Passage 5's positive numeric score conflicts with the passage's sinister
-  turn, showing why automated sentiment scores require contextual review.
+## Project structure
 
-The supplied dataset has no reference sentiment labels. The report's model
-comparisons are small, manually reviewed examples, not benchmark accuracy
-measurements. No model was fine-tuned. Outputs can differ across library or
-NLTK-resource versions; the committed results preserve the assessment run.
+| Path | Purpose |
+|---|---|
+| `sba927_analysis.py` | Python NLP workflow |
+| `SBA927.txt` | Twelve supplied passages |
+| `SBA927_results.txt` | Recorded per-passage output |
+| `requirements.txt` | NLTK and TextBlob dependencies |
+| `.gitignore` | Excludes local environments, caches, and credentials |
+| `docs/coursework/report.docx` | Original assessment report and results appendix |
+
+## Limitations
+
+- The dataset is a small movie-text example, not a representative customer
+  feedback collection. Business applications would need relevant data.
+- No reference sentiment labels are supplied. The comparisons are qualitative,
+  not benchmark accuracy measurements, and no model was fine-tuned.
+- Contraction expansion covers the supplied `doesn't` example rather than
+  general English contractions. Alphabetic filtering removes dotted names
+  such as V.I.K.I. from cleaned tokens; NER uses the original text.
+- Default noun lemmatization and pretrained POS/NER models can make errors,
+  including incorrect word senses and inconsistent entity labels.
+- Dependency and NLTK resource versions can affect outputs. The committed
+  results preserve the assessment run.
 
 ## Troubleshooting
 
-- **`SBA927.txt` not found:** open the terminal in the project folder before
-  running the script. Keep the dataset filename exactly `SBA927.txt`.
-- **Missing Python module:** install `requirements.txt` using the same Python
-  interpreter that runs the script.
-- **NLTK resource error:** check internet access and download availability,
-  then rerun the script. Keep NLTK resources outside the repository.
+- **Dataset not found:** run from the repository root and keep the filename
+  exactly `SBA927.txt`.
+- **Missing module:** install `requirements.txt` with the interpreter used to
+  run the script.
+- **NLTK resource unavailable:** check the download connection and rerun.
+- **Report preview unavailable:** download the Word document to read it.
 
-## Report and submission
+## Background and AI assistance
 
-Download the `.docx` report to view it in Word or another compatible reader.
-Its Appendix D includes the complete 12-passage output. The report uses
-transcribed console evidence; actual VS Code screenshots are not included.
-
-The final Canvas submission should be the repository URL:
-
-https://github.com/rwnycvet/SBA-927-Business-Text-Analytics
+This project began as Per Scholas SBA 927. The original coursework report is
+retained under `docs/coursework`, and the repository URL is retained for the
+submitted assignment. I used ChatGPT (OpenAI) for explanations, code examples,
+debugging guidance, report preparation, and repository documentation. I ran the
+script locally and reviewed its outputs during the assessment.
